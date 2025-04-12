@@ -1,3 +1,25 @@
+import os
+import gdown
+import torch
+
+MODEL_PATH = "model.pth"
+MODEL_URL = "https://drive.google.com/uc?id=11lutEL0hLsG-_3eeUz1wb1jTPU7n6O1i"
+
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("Downloading model from Google Drive...")
+        gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+        print("Download complete.")
+
+def load_model():
+    download_model()
+    model = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
+    model.eval()
+    return model
+
+model = load_model()
+
+
 from flask import Flask, request, jsonify
 import io, os, base64
 from PIL import Image
